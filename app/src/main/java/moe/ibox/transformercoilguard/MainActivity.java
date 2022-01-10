@@ -18,16 +18,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
+
 import java.io.IOException;
 import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import lecho.lib.hellocharts.listener.LineChartOnValueSelectListener;
+import lecho.lib.hellocharts.model.Axis;
 import lecho.lib.hellocharts.model.Line;
 import lecho.lib.hellocharts.model.LineChartData;
 import lecho.lib.hellocharts.model.PointValue;
+import lecho.lib.hellocharts.model.ValueShape;
 import lecho.lib.hellocharts.view.LineChartView;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -66,10 +75,25 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
-    private void log(String content) {
+    private enum logType {
+
+        INFO("[-]"), WARN("[!]"), ERROR("[×]"), DONE("[✔]");
+
+        private final String type;
+
+        logType(String type) {
+            this.type = type;
+        }
+
+        public String getPrefix() {
+            return type;
+        }
+    }
+
+    private void log(String content, logType type) {
         Message msg = new Message();
         msg.what = 0x01;
-        msg.obj = content;
+        msg.obj = type.getPrefix() + " " + content;
         logHandler.sendMessage(msg);
     }
 
@@ -78,28 +102,52 @@ public class MainActivity extends AppCompatActivity {
 
     OkHttpClient client;
 
+    ArrayList<XMLAdapter.BlobEnumList> blobEnumLists = new ArrayList<XMLAdapter.BlobEnumList>();
+    DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();
+    DocumentBuilder documentBuilder;
+
+    {
+        try {
+            documentBuilder = documentBuilderFactory.newDocumentBuilder();
+        } catch (ParserConfigurationException e) {
+            e.printStackTrace();
+        }
+    }
+
     Moshi moshi = new Moshi.Builder().build();
     JsonAdapter<moe.ibox.transformercoilguard.JsonAdapter.AzureBlobData> blobDataJsonAdapter = moshi.adapter(moe.ibox.transformercoilguard.JsonAdapter.AzureBlobData.class);
     moe.ibox.transformercoilguard.JsonAdapter.AzureBlobData blobData;
+
+    private void GetBlobList() {
+        Request request = new Request.Builder()
+                .url("https://tcgtelemetry.blob.core.windows.net/all-telemetry-data?sp=rl&st=2022-01-07T08:32:47Z&se=2025-01-07T16:32:47Z&spr=https&sv=2020-08-04&sr=c&sig=4NoRuN64Z77%2FAgx6XkeyNEYYmn78JsJV373FW8JMR78%3D&restype=container&comp=list")
+                .method("GET", null)
+                .build();
+        try {
+            Response response = client.newCall(request).execute();
+            String result = Objects.requireNonNull(response.body()).string();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @SuppressLint({"SetTextI18n", "StaticFieldLeak"})
     private class RefreshChartTask extends AsyncTask<String, Integer, String> {
         @Override
         protected String doInBackground(String... url) {
-            client = new OkHttpClient().newBuilder()
-                    .build();
+            GetBlobList();
             Request request = new Request.Builder()
                     .url("https://tcgtelemetry.blob.core.windows.net/all-telemetry-data/TransformerCoilGuard/01/2022-01-07/08-48.json?sp=rl&st=2022-01-07T08:32:47Z&se=2025-01-07T16:32:47Z&spr=https&sv=2020-08-04&sr=c&sig=4NoRuN64Z77%2FAgx6XkeyNEYYmn78JsJV373FW8JMR78%3D")
                     .method("GET", null)
                     .build();
             try {
-                log("Fetching blob data...");
+                log("Fetching blob data...", logType.INFO);
                 Response response = client.newCall(request).execute();
-                log("Got blob, parsing...");
+                log("Got blob, parsing...", logType.INFO);
                 String result = Objects.requireNonNull(response.body()).string();
                 String[] records = result.split("\n");
                 blobData = blobDataJsonAdapter.fromJson(records[records.length - 1]);
-                log("Rendering chart...");
+                log("Rendering chart...", logType.INFO);
                 List<PointValue> chartValues = new ArrayList<PointValue>();
                 for (int i = 0; i < blobData.Body.voltages.length; i++) {
                     chartValues.add(new PointValue(i, (float) blobData.Body.voltages[i]));
@@ -107,16 +155,33 @@ public class MainActivity extends AppCompatActivity {
                 Line line = new Line(chartValues);
                 line.setColor(Color.parseColor("#FFBB86FC"))
                         .setCubic(true)
-                        .setStrokeWidth(2)
-                        .setPointRadius(2);
-                List<Line> lines = new ArrayList<Line>();
+                        .setStrokeWidth(1)
+                        .setPointRadius(0)
+                        .setFilled(false)
+                        .setShape(ValueShape.CIRCLE);
+                List<Line> lines = new ArrayList<>();
                 lines.add(line);
+
+                Axis axisX = new Axis();
+                Axis axisY = new Axis();
+
+                axisX.setTextColor(Color.GRAY)
+                        .setName("Time delta")
+                        .setHasLines(true)
+                        .setLineColor(Color.LTGRAY);
+                axisY.setTextColor(Color.GRAY)
+                        .setName("Voltage")
+                        .setHasLines(true)
+                        .setLineColor(Color.LTGRAY);
 
                 chartData = new LineChartData();
                 chartData.setLines(lines);
+                chartData.setAxisXBottom(axisX);
+                chartData.setAxisYLeft(axisY);
+
                 chartView.setLineChartData(chartData);
 
-                log("Done.");
+                log("Done.", logType.DONE);
                 runOnUiThread(() -> btn_refresh.setEnabled(true));
             } catch (IOException e) {
                 e.printStackTrace();
@@ -137,13 +202,15 @@ public class MainActivity extends AppCompatActivity {
         loggingView = findViewById(R.id.scrollView);
         loggingView.setSmoothScrollingEnabled(true);
         chartView = findViewById(R.id.chart);
+        chartView.setInteractive(true);
         chartView.setOnValueTouchListener(new ValueTouchListener());
-        chartView.setInteractive(false);
 
         btn_refresh.setOnClickListener(new ControlOnClickListener());
         btn_clear.setOnClickListener(new ControlOnClickListener());
 
-        log("Initialization...");
+        log("Initialization...", logType.INFO);
+
+        client = new OkHttpClient().newBuilder().build();
 
         new RefreshChartTask().execute();
 
@@ -156,7 +223,7 @@ public class MainActivity extends AppCompatActivity {
             switch (v.getId()) {
                 case R.id.btn_refresh:
                     btn_refresh.setEnabled(false);
-                    log("Refreshing chart...");
+                    log("Refreshing chart...", logType.INFO);
                     new RefreshChartTask().execute();
                     break;
                 case R.id.btn_clear:
@@ -170,7 +237,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onValueSelected(int lineIndex, int pointIndex, PointValue value) {
-            Toast.makeText(MainActivity.this, "Selected: " + value, Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, value.getX() + " 处的电压为 " + value.getY() + "V", Toast.LENGTH_SHORT).show();
         }
 
         @Override

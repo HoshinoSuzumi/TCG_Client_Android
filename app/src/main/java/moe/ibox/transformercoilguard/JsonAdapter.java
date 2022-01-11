@@ -17,6 +17,7 @@ public class JsonAdapter {
 
         static class BodyBean {
             double[] voltages;
+            double[] currents;
         }
     }
 }

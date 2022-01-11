@@ -19,9 +19,12 @@ import com.squareup.moshi.JsonAdapter;
 import com.squareup.moshi.Moshi;
 
 import org.w3c.dom.Document;
+import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,14 +73,13 @@ public class MainActivity extends AppCompatActivity {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-//            loggingView.fullScroll(ScrollView.FOCUS_DOWN);
             scrollToBottom(loggingView, textView);
         }
     };
 
     private enum logType {
 
-        INFO("[-]"), WARN("[!]"), ERROR("[×]"), DONE("[✔]");
+        INFO("[-]"), WARN("[!]"), ERROR("[×]"), DONE("[√]");
 
         private final String type;
 
@@ -118,16 +120,25 @@ public class MainActivity extends AppCompatActivity {
     JsonAdapter<moe.ibox.transformercoilguard.JsonAdapter.AzureBlobData> blobDataJsonAdapter = moshi.adapter(moe.ibox.transformercoilguard.JsonAdapter.AzureBlobData.class);
     moe.ibox.transformercoilguard.JsonAdapter.AzureBlobData blobData;
 
-    private void GetBlobList() {
+    private String GetBlobList() {
         Request request = new Request.Builder()
                 .url("https://tcgtelemetry.blob.core.windows.net/all-telemetry-data?sp=rl&st=2022-01-07T08:32:47Z&se=2025-01-07T16:32:47Z&spr=https&sv=2020-08-04&sr=c&sig=4NoRuN64Z77%2FAgx6XkeyNEYYmn78JsJV373FW8JMR78%3D&restype=container&comp=list")
                 .method("GET", null)
                 .build();
         try {
+            log("Fetching blob list...", logType.INFO);
             Response response = client.newCall(request).execute();
             String result = Objects.requireNonNull(response.body()).string();
-        } catch (IOException e) {
+            log("Parsing blob list..", logType.INFO);
+            ByteArrayInputStream inputStream = new ByteArrayInputStream(result.getBytes(StandardCharsets.UTF_8));
+            Document document = documentBuilder.parse(inputStream);
+            NodeList nodeList = document.getElementsByTagName("Blob");
+            String blobPath = nodeList.item(nodeList.getLength() - 1).getFirstChild().getTextContent();
+            log("Got latest blob path [" + blobPath + "]", logType.INFO);
+            return blobPath;
+        } catch (IOException | SAXException e) {
             e.printStackTrace();
+            return null;
         }
     }
 
@@ -135,16 +146,16 @@ public class MainActivity extends AppCompatActivity {
     private class RefreshChartTask extends AsyncTask<String, Integer, String> {
         @Override
         protected String doInBackground(String... url) {
-            GetBlobList();
+            String blobPath = GetBlobList();
             Request request = new Request.Builder()
-                    .url("https://tcgtelemetry.blob.core.windows.net/all-telemetry-data/TransformerCoilGuard/01/2022-01-07/08-48.json?sp=rl&st=2022-01-07T08:32:47Z&se=2025-01-07T16:32:47Z&spr=https&sv=2020-08-04&sr=c&sig=4NoRuN64Z77%2FAgx6XkeyNEYYmn78JsJV373FW8JMR78%3D")
+                    .url("https://tcgtelemetry.blob.core.windows.net/all-telemetry-data/" + blobPath + "?sp=rl&st=2022-01-07T08:32:47Z&se=2025-01-07T16:32:47Z&spr=https&sv=2020-08-04&sr=c&sig=4NoRuN64Z77%2FAgx6XkeyNEYYmn78JsJV373FW8JMR78%3D")
                     .method("GET", null)
                     .build();
             try {
                 log("Fetching blob data...", logType.INFO);
                 Response response = client.newCall(request).execute();
-                log("Got blob, parsing...", logType.INFO);
                 String result = Objects.requireNonNull(response.body()).string();
+                log("Got blob[" + result.length() + " bytes], parsing...", logType.INFO);
                 String[] records = result.split("\n");
                 blobData = blobDataJsonAdapter.fromJson(records[records.length - 1]);
                 log("Rendering chart...", logType.INFO);

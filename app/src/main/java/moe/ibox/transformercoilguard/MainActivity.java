@@ -25,7 +25,6 @@ import org.xml.sax.SAXException;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.sql.Ref;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -100,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private LineChartView chartView;
-    private LineChartData chartData;
+    private LineChartView lissajousFigure;
 
     OkHttpClient client;
 
@@ -159,38 +158,83 @@ public class MainActivity extends AppCompatActivity {
                 String[] records = result.split("\n");
                 blobData = blobDataJsonAdapter.fromJson(records[records.length - 1]);
                 log("Rendering chart...", logType.INFO);
-                List<PointValue> chartValues = new ArrayList<PointValue>();
+
+                List<PointValue> chartValueOfVoltage = new ArrayList<>();
+                List<PointValue> chartValueOfCurrent = new ArrayList<>();
+                List<PointValue> lissajousFigureValue = new ArrayList<>();
                 for (int i = 0; i < blobData.Body.voltages.length; i++) {
-                    chartValues.add(new PointValue(i, (float) blobData.Body.voltages[i]));
+                    chartValueOfVoltage.add(new PointValue(i, (float) blobData.Body.voltages[i]));
                 }
-                Line line = new Line(chartValues);
-                line.setColor(Color.parseColor("#FFBB86FC"))
+                for (int i = 0; i < blobData.Body.currents.length; i++) {
+                    chartValueOfCurrent.add(new PointValue(i, (float) blobData.Body.currents[i]));
+                }
+                for (int i = 0; i < blobData.Body.lissajous.X.length; i++) {
+                    lissajousFigureValue.add(new PointValue((float) blobData.Body.lissajous.X[i], (float) blobData.Body.lissajous.Y[i]));
+                }
+
+                Line line_voltage = new Line(chartValueOfVoltage).setColor(Color.YELLOW);
+                Line line_current = new Line(chartValueOfCurrent).setColor(Color.GREEN);
+
+                Line line_lissajous = new Line(lissajousFigureValue).setColor(Color.MAGENTA);
+
+                List<Line> lines = new ArrayList<>();
+                lines.add(line_voltage);
+                lines.add(line_current);
+
+                List<Line> lissajousLines = new ArrayList<>();
+                lissajousLines.add(line_lissajous);
+
+                lines.forEach(line -> line
                         .setCubic(true)
                         .setStrokeWidth(1)
                         .setPointRadius(0)
                         .setFilled(false)
-                        .setShape(ValueShape.CIRCLE);
-                List<Line> lines = new ArrayList<>();
-                lines.add(line);
+                        .setShape(ValueShape.CIRCLE)
+                );
+                lissajousLines.forEach(line -> line
+                        .setCubic(true)
+                        .setStrokeWidth(2)
+                        .setPointRadius(0)
+                        .setFilled(false)
+                        .setShape(ValueShape.CIRCLE)
+                );
 
                 Axis axisX = new Axis();
                 Axis axisY = new Axis();
 
                 axisX.setTextColor(Color.GRAY)
-                        .setName("Time delta")
+                        .setName("Samples")
                         .setHasLines(true)
                         .setLineColor(Color.LTGRAY);
                 axisY.setTextColor(Color.GRAY)
-                        .setName("Voltage")
+                        .setName("U & I")
                         .setHasLines(true)
                         .setLineColor(Color.LTGRAY);
 
-                chartData = new LineChartData();
+                Axis lissaAxisX = new Axis();
+                Axis lissaAxisY = new Axis();
+
+                lissaAxisX.setTextColor(Color.GRAY)
+                        .setName("X")
+                        .setHasLines(true)
+                        .setLineColor(Color.LTGRAY);
+                lissaAxisY.setTextColor(Color.GRAY)
+                        .setName("Y")
+                        .setHasLines(true)
+                        .setLineColor(Color.LTGRAY);
+
+                LineChartData chartData = new LineChartData();
                 chartData.setLines(lines);
                 chartData.setAxisXBottom(axisX);
                 chartData.setAxisYLeft(axisY);
 
+                LineChartData lissajousChartData = new LineChartData();
+                lissajousChartData.setLines(lissajousLines);
+                lissajousChartData.setAxisXBottom(lissaAxisX);
+                lissajousChartData.setAxisYLeft(lissaAxisY);
+
                 chartView.setLineChartData(chartData);
+                lissajousFigure.setLineChartData(lissajousChartData);
 
                 log("Done.", logType.DONE);
                 runOnUiThread(() -> btn_refresh.setEnabled(true));
@@ -212,9 +256,14 @@ public class MainActivity extends AppCompatActivity {
         btn_clear = findViewById(R.id.btn_clear);
         loggingView = findViewById(R.id.scrollView);
         loggingView.setSmoothScrollingEnabled(true);
+
         chartView = findViewById(R.id.chart);
         chartView.setInteractive(true);
         chartView.setOnValueTouchListener(new ValueTouchListener());
+
+        lissajousFigure = findViewById(R.id.lissajous);
+        lissajousFigure.setInteractive(true);
+        lissajousFigure.setOnValueTouchListener(new ValueTouchListener());
 
         btn_refresh.setOnClickListener(new ControlOnClickListener());
         btn_clear.setOnClickListener(new ControlOnClickListener());
@@ -248,7 +297,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onValueSelected(int lineIndex, int pointIndex, PointValue value) {
-            Toast.makeText(MainActivity.this, value.getX() + " 处的电压为 " + value.getY() + "V", Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, value.getX() + " 处的" + (lineIndex == 0 ? "电压" : "电流") + "为 " + value.getY() + (lineIndex == 0 ? "V" : "A"), Toast.LENGTH_SHORT).show();
         }
 
         @Override

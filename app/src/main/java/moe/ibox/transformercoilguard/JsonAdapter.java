@@ -18,6 +18,12 @@ public class JsonAdapter {
         static class BodyBean {
             double[] voltages;
             double[] currents;
+            LissajousBean lissajous;
+        }
+
+        static class LissajousBean {
+            double[] X;
+            double[] Y;
         }
     }
 }

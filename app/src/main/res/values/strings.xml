@@ -1,6 +1,6 @@
 <resources>
-    <string name="app_name">Transformer Coil Guard</string>
+    <string name="app_name" translatable="false">Transformer Coil Guard</string>
     <string name="tag_temperature">Temperature</string>
-    <string name="tag_humidity">Humidity</string>
+    <string name="tag_temperature_coil">Coil Temperature</string>
     <string name="tag_voltage">Main Voltage</string>
 </resources>

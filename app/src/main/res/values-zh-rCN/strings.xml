@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Transformer Coil Guard</string>
-    <string name="tag_temperature">温度</string>
-    <string name="tag_humidity">湿度</string>
+    <string name="tag_temperature">环境温度</string>
+    <string name="tag_temperature_coil">绕组温度</string>
     <string name="tag_voltage">主电压</string>
 </resources>

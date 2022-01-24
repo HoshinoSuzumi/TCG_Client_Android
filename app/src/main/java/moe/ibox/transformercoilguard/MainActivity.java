@@ -105,14 +105,14 @@ public class MainActivity extends AppCompatActivity {
         protected String doInBackground(String... url) {
             String blobPath = GetBlobList();
             if (blobPath == null) {
-                runOnUiThread(() -> Snackbar.make(MainActivity.this, findViewById(R.id.mainView), "获取数据存档列表失败", Snackbar.LENGTH_LONG).show());
+                runOnUiThread(() -> Snackbar.make(MainActivity.this, findViewById(R.id.mainView), getString(R.string.app_err_fetch_blob_list), Snackbar.LENGTH_LONG).show());
                 return null;
             }
             String blobUrl = "https://tcgtelemetry.blob.core.windows.net/all-telemetry-data/" + blobPath + "?sp=rl&st=2022-01-07T08:32:47Z&se=2025-01-07T16:32:47Z&spr=https&sv=2020-08-04&sr=c&sig=4NoRuN64Z77%2FAgx6XkeyNEYYmn78JsJV373FW8JMR78%3D";
             try {
                 String result = httpGetFromUrl(blobUrl);
                 if (result == null) {
-                    runOnUiThread(() -> Snackbar.make(MainActivity.this, findViewById(R.id.mainView), "获取数据失败", Snackbar.LENGTH_LONG).show());
+                    runOnUiThread(() -> Snackbar.make(MainActivity.this, findViewById(R.id.mainView), getString(R.string.app_err_fetch_data), Snackbar.LENGTH_LONG).show());
                     return null;
                 }
                 String[] records = result.split("\n");
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 lissajousChartData.setAxisYLeft(lissaAxisY);
 
                 lissajousFigure.setLineChartData(lissajousChartData);
-                runOnUiThread(() -> Snackbar.make(MainActivity.this, findViewById(R.id.lissajous), "渲染图形成功", Snackbar.LENGTH_LONG).show());
+                runOnUiThread(() -> Snackbar.make(MainActivity.this, findViewById(R.id.lissajous), getString(R.string.app_render_finished), Snackbar.LENGTH_LONG).show());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -211,21 +211,21 @@ public class MainActivity extends AppCompatActivity {
         });
 
         new TapTargetSequence(this).targets(
-                TapTarget.forView(findViewById(R.id.radioGroupCoilSelect), "多组数据查看", "在这里选择不同绕组的监测图形进行查看")
+                TapTarget.forView(findViewById(R.id.radioGroupCoilSelect), getString(R.string.guide_stp1_title), getString(R.string.guide_stp1_description))
                         .cancelable(false)
                         .dimColor(R.color.black)
                         .tintTarget(false)
                         .targetRadius(100)
                         .transparentTarget(true),
-                TapTarget.forView(findViewById(R.id.iconViewTemp), "环境温度", "在这里监视变电器周遭环境温度")
+                TapTarget.forView(findViewById(R.id.iconViewTemp), getString(R.string.guide_stp2_title), getString(R.string.guide_stp2_description))
                         .cancelable(false)
                         .dimColor(R.color.black)
                         .tintTarget(false),
-                TapTarget.forView(findViewById(R.id.iconViewCoilTemp), "绕组温度", "在这里监视变电器各绕组的温度")
+                TapTarget.forView(findViewById(R.id.iconViewCoilTemp), getString(R.string.guide_stp3_title), getString(R.string.guide_stp3_description))
                         .cancelable(false)
                         .dimColor(R.color.black)
                         .tintTarget(false),
-                TapTarget.forView(findViewById(R.id.iconViewVoltage), "绕组电压", "在这里监视变电器各组绕组的电压值")
+                TapTarget.forView(findViewById(R.id.iconViewVoltage), getString(R.string.guide_stp4_title), getString(R.string.guide_stp4_description))
                         .cancelable(false)
                         .dimColor(R.color.black)
                         .tintTarget(false)

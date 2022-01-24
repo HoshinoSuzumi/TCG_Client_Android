@@ -1,6 +1,19 @@
 <resources>
-    <string name="app_name" translatable="false">Transformer Coil Guard</string>
+    <string name="app_name">Transformer Coil Guard</string>
     <string name="tag_temperature">Temperature</string>
     <string name="tag_temperature_coil">Coil Temperature</string>
     <string name="tag_voltage">Main Voltage</string>
+    <string name="app_render_finished">Figure rendered</string>
+    <string name="app_err_fetch_data">An error occurred while fetching data</string>
+    <string name="app_err_fetch_blob_list">An error occurred while fetching data blob list</string>
+    <string name="guide_stp1_title">Multiple groups of data</string>
+    <string name="guide_stp1_description">Select different coil monitoring figures to view</string>
+    <string name="guide_stp2_title">Enviroment temperature</string>
+    <string name="guide_stp2_description">Monitor the ambient temperature around the transformer here</string>
+    <string name="guide_stp3_title">Temperature of coils</string>
+    <string name="guide_stp3_description">The temperature of each coil of the transformer is monitored here</string>
+    <string name="guide_stp4_title">Voltage of coils</string>
+    <string name="guide_stp4_description">The voltage value of each coil of the transformer is monitored here</string>
+    <string name="tag_lissajous_figure_monitor">Lissajous Figures Monitor</string>
+    <string name="tag_lissajous_description">Visual graphics from sensing data of transformer</string>
 </resources>

@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F6F6F6">
+    android:background="#2B2B87">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -29,19 +30,8 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <!--                <ImageView-->
-                <!--                    android:id="@+id/iconTransformer"-->
-                <!--                    android:layout_width="338dp"-->
-                <!--                    android:layout_height="334dp"-->
-                <!--                    android:layout_marginBottom="84dp"-->
-                <!--                    android:contentDescription="Transformer"-->
-                <!--                    app:layout_constraintBottom_toBottomOf="parent"-->
-                <!--                    app:layout_constraintEnd_toEndOf="parent"-->
-                <!--                    app:layout_constraintStart_toStartOf="parent"-->
-                <!--                    app:srcCompat="@drawable/ic_transformer"-->
-                <!--                    tools:ignore="HardcodedText" />-->
+                android:layout_height="match_parent"
+                tools:ignore="HardcodedText">
 
                 <moe.ibox.transformercoilguard.view.IconView
                     android:id="@+id/iconView4"
@@ -49,7 +39,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="36dp"
                     android:text="&#xe742;"
-                    android:textColor="#64B5F6"
+                    android:textColor="#1D91C9"
                     android:textSize="300sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -73,56 +63,57 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="78dp"
-                    android:text="U"
+                    android:text="A"
                     android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/radioGroup"
-                    app:layout_constraintStart_toStartOf="@+id/radioGroup" />
+                    app:layout_constraintBottom_toTopOf="@+id/radioGroupCoilSelect"
+                    app:layout_constraintStart_toStartOf="@+id/radioGroupCoilSelect" />
 
                 <TextView
                     android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="53dp"
-                    android:text="V"
+                    android:text="B"
                     android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+                    app:layout_constraintBottom_toTopOf="@+id/radioGroupCoilSelect"
                     app:layout_constraintStart_toEndOf="@+id/textView" />
 
                 <TextView
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="50dp"
-                    android:text="W"
+                    android:layout_marginStart="54dp"
+                    android:text="C"
                     android:textSize="18sp"
-                    app:layout_constraintBottom_toTopOf="@+id/radioGroup"
+                    app:layout_constraintBottom_toTopOf="@+id/radioGroupCoilSelect"
                     app:layout_constraintStart_toEndOf="@+id/textView8" />
 
                 <RadioGroup
-                    android:id="@+id/radioGroup"
+                    android:id="@+id/radioGroupCoilSelect"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="-26dp"
-                    android:checkedButton="@id/radioButton"
+                    android:checkedButton="@id/radioButtonCoilA"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toTopOf="@+id/iconView4"
                     app:layout_constraintEnd_toEndOf="@+id/iconView4"
                     app:layout_constraintStart_toStartOf="@+id/iconView4">
 
                     <RadioButton
-                        android:id="@+id/radioButton"
+                        android:id="@+id/radioButtonCoilA"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="68dp" />
 
                     <RadioButton
-                        android:id="@+id/radioButton2"
+                        android:id="@+id/radioButtonCoilB"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="17dp" />
+                        android:layout_marginStart="17dp"
+                        tools:ignore="DuplicateSpeakableTextCheck" />
 
                     <RadioButton
-                        android:id="@+id/radioButton3"
+                        android:id="@+id/radioButtonCoilC"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="17dp" />
@@ -205,11 +196,12 @@
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/blockTemp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <moe.ibox.transformercoilguard.view.IconView
-                        android:id="@+id/iconView"
+                        android:id="@+id/iconViewTemp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -228,7 +220,7 @@
                         android:textSize="24sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/iconView"
+                        app:layout_constraintStart_toEndOf="@+id/iconViewTemp"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
@@ -257,11 +249,12 @@
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/blockCoilTemp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <moe.ibox.transformercoilguard.view.IconView
-                        android:id="@+id/iconView2"
+                        android:id="@+id/iconViewCoilTemp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -281,7 +274,7 @@
                         android:textSize="24sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/iconView2"
+                        app:layout_constraintStart_toEndOf="@+id/iconViewCoilTemp"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.507" />
 
@@ -311,11 +304,12 @@
                 android:orientation="vertical">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/blockVoltage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
                     <moe.ibox.transformercoilguard.view.IconView
-                        android:id="@+id/iconView3"
+                        android:id="@+id/iconViewVoltage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -334,7 +328,7 @@
                         android:textSize="24sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/iconView3"
+                        app:layout_constraintStart_toEndOf="@+id/iconViewVoltage"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintVertical_bias="0.507" />
 

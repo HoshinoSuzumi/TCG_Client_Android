@@ -34,6 +34,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
     implementation("com.squareup.moshi:moshi:1.13.0")
     implementation("com.github.lecho:hellocharts-library:1.5.8@aar")
+    implementation 'com.getkeepsafe.taptargetview:taptargetview:1.13.3'
     //noinspection GradleDynamicVersion
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

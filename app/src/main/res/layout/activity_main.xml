@@ -38,7 +38,6 @@
                     android:id="@+id/iconView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="16dp"
                     android:text="&#xe742;"
                     android:textColor="#1D91C9"
                     android:textSize="300sp"

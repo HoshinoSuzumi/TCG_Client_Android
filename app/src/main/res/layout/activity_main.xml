@@ -43,7 +43,7 @@
                     android:textSize="300sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.495"
+                    app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <moe.ibox.transformercoilguard.view.IconView
@@ -246,8 +246,8 @@
             <View
                 android:layout_width="1px"
                 android:layout_height="match_parent"
-                android:layout_marginVertical="10dp"
-                android:background="#B5B5B5" />
+                android:layout_marginVertical="20dp"
+                android:background="#47494A" />
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -303,8 +303,8 @@
             <View
                 android:layout_width="1px"
                 android:layout_height="match_parent"
-                android:layout_marginVertical="10dp"
-                android:background="#BCBCBC" />
+                android:layout_marginVertical="20dp"
+                android:background="#47494A" />
 
             <LinearLayout
                 android:layout_width="0dp"

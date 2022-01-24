@@ -5,7 +5,8 @@
     android:id="@+id/mainView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3C3F41">
+    android:background="#3C3F41"
+    android:fitsSystemWindows="true">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -37,7 +38,7 @@
                     android:id="@+id/iconView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="36dp"
+                    android:layout_marginBottom="16dp"
                     android:text="&#xe742;"
                     android:textColor="#1D91C9"
                     android:textSize="300sp"
@@ -130,14 +131,14 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginTop="4dp"
                     android:text="李萨如图形监测"
+                    android:textColor="#FFFFFF"
                     android:textSize="24sp"
                     app:layout_constraintBottom_toBottomOf="@+id/iconView5"
                     app:layout_constraintEnd_toEndOf="@+id/textView11"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toEndOf="@+id/iconView5"
                     app:layout_constraintTop_toTopOf="@+id/iconView5"
-                    app:layout_constraintVertical_bias="0.0"
-                    android:textColor="#FFFFFF" />
+                    app:layout_constraintVertical_bias="0.0" />
 
                 <TextView
                     android:id="@+id/textView11"

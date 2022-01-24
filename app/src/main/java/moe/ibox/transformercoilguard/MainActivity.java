@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.view.View;
+import android.view.WindowManager;
 import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
@@ -168,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
                 lissajousChartData.setAxisYLeft(lissaAxisY);
 
                 lissajousFigure.setLineChartData(lissajousChartData);
-                runOnUiThread(() -> Snackbar.make(MainActivity.this, findViewById(R.id.mainView), "渲染图形成功", Snackbar.LENGTH_LONG).show());
+                runOnUiThread(() -> Snackbar.make(MainActivity.this, findViewById(R.id.lissajous), "渲染图形成功", Snackbar.LENGTH_LONG).show());
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -181,6 +183,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_beta);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+        getWindow().setNavigationBarColor(Color.TRANSPARENT);
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_STABLE | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+        );
 
         httpClient = new OkHttpClient().newBuilder().build();
 
@@ -202,8 +210,6 @@ public class MainActivity extends AppCompatActivity {
             new RefreshChartTask().execute();
         });
 
-        new RefreshChartTask().execute();
-
         new TapTargetSequence(this).targets(
                 TapTarget.forView(findViewById(R.id.radioGroupCoilSelect), "多组数据查看", "在这里选择不同绕组的监测图形进行查看")
                         .cancelable(false)
@@ -223,6 +229,21 @@ public class MainActivity extends AppCompatActivity {
                         .cancelable(false)
                         .dimColor(R.color.black)
                         .tintTarget(false)
-        ).start();
+        ).listener(new TapTargetSequence.Listener() {
+            @Override
+            public void onSequenceFinish() {
+                new RefreshChartTask().execute();
+            }
+
+            @Override
+            public void onSequenceStep(TapTarget lastTarget, boolean targetClicked) {
+
+            }
+
+            @Override
+            public void onSequenceCanceled(TapTarget lastTarget) {
+
+            }
+        }).start();
     }
 }

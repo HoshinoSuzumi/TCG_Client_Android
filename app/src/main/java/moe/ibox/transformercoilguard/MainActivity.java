@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                     lissajousFigureValue.add(new PointValue((float) lissajousAxis.X[i], (float) lissajousAxis.Y[i]));
                 }
 
-                Line line_lissajous = new Line(lissajousFigureValue).setColor(Color.WHITE);
+                Line line_lissajous = new Line(lissajousFigureValue).setColor(Color.parseColor("#FF9800"));
                 List<Line> lissajousLines = new ArrayList<>();
                 lissajousLines.add(line_lissajous);
                 lissajousLines.forEach(line -> line

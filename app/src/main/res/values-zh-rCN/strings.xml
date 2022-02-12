@@ -4,7 +4,7 @@
     <string name="tag_temperature_coil">绕组温度</string>
     <string name="tag_voltage">主电压</string>
     <string name="app_name">变电守卫</string>
-    <string name="app_render_finished">图形渲染成功</string>
+    <string name="app_render_finished">数据已更新</string>
     <string name="app_err_fetch_data">获取数据失败</string>
     <string name="app_err_fetch_blob_list">获取数据存档列表失败</string>
     <string name="guide_stp1_title">多组数据查看</string>
@@ -17,4 +17,6 @@
     <string name="guide_stp4_description">在这里监视变电器各组绕组的电压值</string>
     <string name="tag_lissajous_figure_monitor">李萨如图形监测</string>
     <string name="tag_lissajous_description">基于变压器传感数据的可视化图形</string>
+    <string name="actions_refresh">刷新</string>
+    <string name="title_activity_settings">首选项</string>
 </resources>

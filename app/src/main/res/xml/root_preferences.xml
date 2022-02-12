@@ -1,0 +1,20 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory android:title="刷新">
+
+        <SwitchPreference
+            android:defaultValue="true"
+            android:key="switch_preference_auto_refresh"
+            android:summary="开启时自动获取新的数据并更新图表"
+            android:title="自动刷新数据" />
+        <EditTextPreference
+            android:defaultValue="30"
+            android:dependency="switch_preference_auto_refresh"
+            android:key="edit_text_preference_1"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="秒"
+            android:title="自动刷新间隔"
+            app:useSimpleSummaryProvider="true" />
+    </PreferenceCategory>
+</PreferenceScreen>

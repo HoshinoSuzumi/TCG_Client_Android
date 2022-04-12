@@ -18,6 +18,12 @@
     <string name="tag_lissajous_description">Visual graphics from sensing data of transformer</string>
     <string name="actions_refresh">Refresh</string>
     <string name="title_activity_settings">Preferences</string>
+    <string name="app_auto_refresh_enabled">Auto refresh</string>
+    <string name="app_auto_refresh_disabled">Auto refresh off</string>
+    <string name="guide_auto_refresh_title">Auto refresh</string>
+    <string name="guide_auto_refresh_description">Data and figure will refresh automaticly</string>
+    <string name="guide_settings_title">Settings</string>
+    <string name="guide_settings_description">App management</string>
 
     <!-- Preference Titles -->
 

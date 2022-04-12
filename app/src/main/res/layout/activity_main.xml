@@ -27,7 +27,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintWidth_percent="0.33">
+            app:layout_constraintWidth_percent="0.6">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -40,11 +40,11 @@
                     android:layout_height="wrap_content"
                     android:text="&#xe742;"
                     android:textColor="#1D91C9"
-                    android:textSize="300sp"
+                    android:textSize="140sp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent" />
+                    app:layout_constraintStart_toEndOf="@+id/textView11" />
 
                 <moe.ibox.transformercoilguard.view.IconView
                     android:id="@+id/iconView5"
@@ -62,7 +62,7 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="78dp"
+                    android:layout_marginStart="32dp"
                     android:text="A"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
@@ -73,7 +73,7 @@
                     android:id="@+id/textView8"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="53dp"
+                    android:layout_marginStart="19dp"
                     android:text="B"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
@@ -84,7 +84,7 @@
                     android:id="@+id/textView9"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="54dp"
+                    android:layout_marginStart="19dp"
                     android:text="C"
                     android:textColor="#FFFFFF"
                     android:textSize="18sp"
@@ -95,7 +95,7 @@
                     android:id="@+id/radioGroupCoilSelect"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="-26dp"
+                    android:layout_marginBottom="-10dp"
                     android:checkedButton="@id/radioButtonCoilA"
                     android:orientation="horizontal"
                     app:layout_constraintBottom_toTopOf="@+id/iconView4"
@@ -105,21 +105,23 @@
                     <RadioButton
                         android:id="@+id/radioButtonCoilA"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="68dp" />
+                        android:layout_height="20dp"
+                        android:layout_marginStart="23dp"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                     <RadioButton
                         android:id="@+id/radioButtonCoilB"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="17dp"
-                        tools:ignore="DuplicateSpeakableTextCheck" />
+                        android:layout_height="20dp"
+                        android:layout_marginStart="-17dp"
+                        tools:ignore="DuplicateSpeakableTextCheck,TouchTargetSizeCheck" />
 
                     <RadioButton
                         android:id="@+id/radioButtonCoilC"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="17dp" />
+                        android:layout_height="20dp"
+                        android:layout_marginStart="-17dp"
+                        tools:ignore="TouchTargetSizeCheck" />
 
                 </RadioGroup>
 
@@ -131,7 +133,7 @@
                     android:layout_marginTop="4dp"
                     android:text="@string/tag_lissajous_figure_monitor"
                     android:textColor="#FFFFFF"
-                    android:textSize="24sp"
+                    android:textSize="16sp"
                     app:layout_constraintBottom_toBottomOf="@+id/iconView5"
                     app:layout_constraintEnd_toEndOf="@+id/textView11"
                     app:layout_constraintHorizontal_bias="0.0"
@@ -146,7 +148,7 @@
                     android:layout_marginStart="12dp"
                     android:text="@string/tag_lissajous_description"
                     android:textColor="#FFFFFF"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     app:layout_constraintStart_toEndOf="@+id/iconView5"
                     app:layout_constraintTop_toBottomOf="@+id/textView10" />
 
@@ -155,23 +157,23 @@
                     style="@style/Widget.AppCompat.ProgressBar.Horizontal"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_marginStart="6dp"
+                    android:layout_marginStart="4dp"
                     android:indeterminate="false"
                     android:max="30"
                     android:progress="12"
-                    app:layout_constraintBottom_toBottomOf="@+id/textView12"
+                    app:layout_constraintBottom_toBottomOf="@+id/textViewAutoRefresh"
                     app:layout_constraintEnd_toEndOf="@+id/textView11"
-                    app:layout_constraintStart_toEndOf="@+id/textView12"
-                    app:layout_constraintTop_toTopOf="@+id/textView12" />
+                    app:layout_constraintStart_toEndOf="@+id/textViewAutoRefresh"
+                    app:layout_constraintTop_toTopOf="@+id/textViewAutoRefresh" />
 
                 <TextView
-                    android:id="@+id/textView12"
+                    android:id="@+id/textViewAutoRefresh"
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_marginStart="12dp"
-                    android:text="自动刷新"
+                    android:text="@string/app_auto_refresh_enabled"
                     android:textColor="#FFFFFF"
-                    android:textSize="12sp"
+                    android:textSize="10sp"
                     app:layout_constraintStart_toEndOf="@+id/iconView5"
                     app:layout_constraintTop_toBottomOf="@+id/textView11" />
 
@@ -203,13 +205,14 @@
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
         android:layout_margin="20dp"
         app:cardBackgroundColor="#2D2F31"
         app:cardCornerRadius="12dp"
         app:cardElevation="4dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.2"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="HardcodedText">
 
@@ -237,7 +240,7 @@
                         android:layout_marginStart="16dp"
                         android:text="&#xe629;"
                         android:textColor="#F44336"
-                        android:textSize="48sp"
+                        android:textSize="34sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -248,7 +251,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/tag_temperature"
                         android:textColor="#FFFFFF"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/iconViewTemp"
@@ -292,7 +295,7 @@
                         android:layout_marginStart="16dp"
                         android:text="&#xe83a;"
                         android:textColor="#2196F3"
-                        android:textSize="48sp"
+                        android:textSize="34sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -304,7 +307,7 @@
                         android:layout_marginStart="8dp"
                         android:text="@string/tag_temperature_coil"
                         android:textColor="#FFFFFF"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/iconViewCoilTemp"
@@ -349,7 +352,7 @@
                         android:layout_marginStart="16dp"
                         android:text="&#xe62b;"
                         android:textColor="#FF9800"
-                        android:textSize="48sp"
+                        android:textSize="34sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
@@ -360,7 +363,7 @@
                         android:layout_height="wrap_content"
                         android:text="@string/tag_voltage"
                         android:textColor="#FFFFFF"
-                        android:textSize="24sp"
+                        android:textSize="20sp"
                         android:textStyle="bold"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/iconViewVoltage"

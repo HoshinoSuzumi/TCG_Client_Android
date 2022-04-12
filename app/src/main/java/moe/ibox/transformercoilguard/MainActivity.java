@@ -14,9 +14,11 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.preference.PreferenceManager;
 
 import com.getkeepsafe.taptargetview.TapTarget;
 import com.getkeepsafe.taptargetview.TapTargetSequence;
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     /* Auto refresh Timer */
     private Thread autoRefreshThread;
     private long entropy;
-    private final int autoRefreshSecs = 30;  // sec
+    private int autoRefreshSecs = 30;  // sec
     private final int granularity = 10; // ms
     private final int stepPerSec = 1000 / granularity;
 
@@ -202,13 +204,13 @@ public class MainActivity extends AppCompatActivity {
                 Axis lissaAxisY = new Axis();
 
                 lissaAxisX.setTextColor(Color.GRAY)
-                        .setName("X")
-                        .setTextSize(15)
+//                        .setName("X")
+//                        .setTextSize(15)
                         .setHasLines(true)
                         .setLineColor(Color.LTGRAY);
                 lissaAxisY.setTextColor(Color.GRAY)
-                        .setName("Y")
-                        .setTextSize(15)
+//                        .setName("Y")
+//                        .setTextSize(15)
                         .setHasLines(true)
                         .setLineColor(Color.LTGRAY);
 
@@ -270,7 +272,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         /* Init SharedPreferences */
-        systemPreferences = getSharedPreferences("systemPreferences", MODE_PRIVATE);
+//        systemPreferences = getSharedPreferences("systemPreferences", MODE_PRIVATE);
+        systemPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         systemPreferencesEditor = systemPreferences.edit();
 
         /* 沉浸式处理 */
@@ -308,16 +311,24 @@ public class MainActivity extends AppCompatActivity {
         autoRefreshProgress.setMax(autoRefreshSecs * stepPerSec);
 
         /* Auto refresh thread */
+        TextView textViewAutoRefresh = findViewById(R.id.textViewAutoRefresh);
         autoRefreshThread = new Thread(() -> {
             while (true) {
-                runOnUiThread(() -> {
-                    autoRefreshProgress.setProgress((int) entropy % (autoRefreshSecs * stepPerSec));
-//                    if (entropy % 100 == 0) Log.i("ENTROPY", String.valueOf(entropy));
-                    if ((entropy % (autoRefreshSecs * stepPerSec) == 0)) {
+                autoRefreshSecs = Integer.parseInt(systemPreferences.getString("edit_text_preference_auto_refresh_delay", "30"));
+                autoRefreshProgress.setMax(autoRefreshSecs * stepPerSec);
+                boolean isAutoRefreshEnabled = systemPreferences.getBoolean("switch_preference_auto_refresh", false);
+                if (isAutoRefreshEnabled) {
+                    entropy++;
+                    if ((entropy % ((long) autoRefreshSecs * stepPerSec) == 0)) {
                         new RefreshChartTask().execute();
                     }
-                });
-                entropy++;
+                    runOnUiThread(() -> autoRefreshProgress.setVisibility(View.VISIBLE));
+                } else {
+                    entropy = 0;
+                    runOnUiThread(() -> autoRefreshProgress.setVisibility(View.INVISIBLE));
+                }
+                autoRefreshProgress.setProgress((int) entropy % (autoRefreshSecs * stepPerSec));
+                runOnUiThread(() -> textViewAutoRefresh.setText(isAutoRefreshEnabled ? R.string.app_auto_refresh_enabled : R.string.app_auto_refresh_disabled));
                 try {
                     //noinspection BusyWait
                     Thread.sleep(granularity);
@@ -331,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
         /* The first data fetching and viewing */
         new RefreshChartTask().execute();
 
-        if (!systemPreferences.getBoolean("guideCompleted", false)) {
+        if (systemPreferences.getBoolean("switch_preference_guide", true)) {
             new TapTargetSequence(this).targets(
                     TapTarget.forView(findViewById(R.id.radioGroupCoilSelect), getString(R.string.guide_stp1_title), getString(R.string.guide_stp1_description))
                             .cancelable(false)
@@ -339,6 +350,12 @@ public class MainActivity extends AppCompatActivity {
                             .tintTarget(false)
                             .targetRadius(100)
                             .transparentTarget(true),
+                    TapTarget.forView(findViewById(R.id.progress_auto_refresh), getString(R.string.guide_auto_refresh_title), getString(R.string.guide_auto_refresh_description))
+                            .cancelable(false)
+                            .dimColor(R.color.black)
+                            .tintTarget(false)
+                            .targetRadius(75)
+                            .transparentTarget(false),
                     TapTarget.forView(findViewById(R.id.iconViewTemp), getString(R.string.guide_stp2_title), getString(R.string.guide_stp2_description))
                             .cancelable(false)
                             .dimColor(R.color.black)
@@ -354,7 +371,7 @@ public class MainActivity extends AppCompatActivity {
             ).listener(new TapTargetSequence.Listener() {
                 @Override
                 public void onSequenceFinish() {
-                    systemPreferencesEditor.putBoolean("guideCompleted", true).commit();
+                    systemPreferencesEditor.putBoolean("switch_preference_guide", false).commit();
                 }
 
                 @Override

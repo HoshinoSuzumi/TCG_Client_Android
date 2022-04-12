@@ -1,4 +1,4 @@
-package moe.ibox.transformercoilguard.view;
+package com.uniiem.transformercoilguard.view;
 
 import android.content.Context;
 import android.graphics.Typeface;

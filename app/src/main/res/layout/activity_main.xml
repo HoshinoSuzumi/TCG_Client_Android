@@ -34,7 +34,7 @@
                 android:layout_height="match_parent"
                 tools:ignore="HardcodedText">
 
-                <moe.ibox.transformercoilguard.view.IconView
+                <com.uniiem.transformercoilguard.view.IconView
                     android:id="@+id/iconView4"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -46,7 +46,7 @@
                     app:layout_constraintHorizontal_bias="0.5"
                     app:layout_constraintStart_toEndOf="@+id/textView11" />
 
-                <moe.ibox.transformercoilguard.view.IconView
+                <com.uniiem.transformercoilguard.view.IconView
                     android:id="@+id/iconView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -233,7 +233,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <moe.ibox.transformercoilguard.view.IconView
+                    <com.uniiem.transformercoilguard.view.IconView
                         android:id="@+id/iconViewTemp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -288,7 +288,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <moe.ibox.transformercoilguard.view.IconView
+                    <com.uniiem.transformercoilguard.view.IconView
                         android:id="@+id/iconViewCoilTemp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -345,7 +345,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
 
-                    <moe.ibox.transformercoilguard.view.IconView
+                    <com.uniiem.transformercoilguard.view.IconView
                         android:id="@+id/iconViewVoltage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

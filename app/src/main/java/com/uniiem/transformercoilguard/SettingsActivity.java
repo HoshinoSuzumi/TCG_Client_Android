@@ -1,4 +1,4 @@
-package moe.ibox.transformercoilguard;
+package com.uniiem.transformercoilguard;
 
 import android.os.Bundle;
 import android.text.InputType;

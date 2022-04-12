@@ -1,4 +1,4 @@
-package moe.ibox.transformercoilguard;
+package com.uniiem.transformercoilguard;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -86,8 +86,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     Moshi moshi = new Moshi.Builder().build();
-    JsonAdapter<moe.ibox.transformercoilguard.JsonAdapter.AzureBlobData> blobDataJsonAdapter = moshi.adapter(moe.ibox.transformercoilguard.JsonAdapter.AzureBlobData.class);
-    moe.ibox.transformercoilguard.JsonAdapter.AzureBlobData blobData;
+    JsonAdapter<com.uniiem.transformercoilguard.JsonAdapter.AzureBlobData> blobDataJsonAdapter = moshi.adapter(com.uniiem.transformercoilguard.JsonAdapter.AzureBlobData.class);
+    com.uniiem.transformercoilguard.JsonAdapter.AzureBlobData blobData;
 
     /* View processing */
     private enum CoilGroup {
@@ -169,7 +169,7 @@ public class MainActivity extends AppCompatActivity {
                 blobData = blobDataJsonAdapter.fromJson(records[records.length - 1]);
 
                 assert blobData != null;
-                moe.ibox.transformercoilguard.JsonAdapter.AzureBlobData.LissajousBean.LissajousAxis lissajousAxis;
+                com.uniiem.transformercoilguard.JsonAdapter.AzureBlobData.LissajousBean.LissajousAxis lissajousAxis;
                 switch (MonitoringCoil) {
                     case A:
                         lissajousAxis = blobData.Body.lissajous.A;

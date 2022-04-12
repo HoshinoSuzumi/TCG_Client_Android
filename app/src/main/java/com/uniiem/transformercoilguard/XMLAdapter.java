@@ -1,4 +1,4 @@
-package moe.ibox.transformercoilguard;
+package com.uniiem.transformercoilguard;
 
 public class XMLAdapter {
     static class BlobEnumList {

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="moe.ibox.transformercoilguard">
+    package="com.uniiem.transformercoilguard">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -21,7 +21,7 @@
             android:value="portrait|landscape" />
 
         <activity
-            android:name=".MainActivity"
+            android:name="com.uniiem.transformercoilguard.MainActivity"
             android:exported="true"
             android:screenOrientation="landscape">
             <intent-filter>
@@ -32,7 +32,7 @@
         </activity>
 
         <activity
-            android:name=".SettingsActivity"
+            android:name="com.uniiem.transformercoilguard.SettingsActivity"
             android:exported="false"
             android:label="@string/title_activity_settings" />
 

@@ -3,14 +3,22 @@ plugins {
 }
 
 android {
+    signingConfigs {
+        release {
+            storeFile file('F:\\OneDrive\\DDLC\\OneDrive - dokidokiliteratureclub\\Developing\\1.Android Keystores\\uniiem.com.jks')
+            storePassword '94hyacinth'
+            keyAlias 'general'
+            keyPassword '94hyacinth'
+        }
+    }
     compileSdk 31
 
     defaultConfig {
-        applicationId "moe.ibox.transformercoilguard"
+        applicationId releaseApplicationIdSuffix
         minSdk 29
         targetSdk 31
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName 'Tech Preview 1.0'
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -19,6 +27,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
